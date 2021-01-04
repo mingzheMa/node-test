@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2016",
+    "sourceMap": true,
+    "removeComments": true,
+    "noEmitOnError": true
+  },
+  "files": ["index.ts"],
+  "include": ["src"],
+  "exclude": []
+}
