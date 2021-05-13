@@ -1,0 +1,1 @@
+console.log("设置本文件为 node ./ 启动文件")

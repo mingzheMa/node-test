@@ -1,60 +1,34 @@
-// Buffer
-// console.log(Buffer.from("buffer"))
+// 导入分析
+// function require(path) {
+//   // 1.通过路径读出文件内容
 
-// __dirname
-// 当前文件路径
-// console.log(__dirname)
+//   function myModule(module, exports) {
+//     // 2.导出文件放入函数执行
+//     exports.a = 1;
+//     module.exports = {
+//       b: 2,
+//       c: 3
+//     };
+//     this.d = 4;
+//   }
 
-// __filename
-// 当前文件路径/文件名
-// console.log(__filename)
+//   const exports = module.exports;
+//   module.exports = myModule(module.exports, module.exports, exports);
 
-// console
-// 不解释
+//   // 3.返回module.exports对象
+//   return module.exports;
+// }
 
-// exports
-// 导出对象，是module.exports的快捷方式
-// console.log(exports)
-// console.log(exports === module.exports)
+const test = require("./test");
+console.log(test);
 
-// global
-// 全局对象上的global就是全局对象
-// console.log(global)
-// console.log(global === global.global)
+// require方法上的属性
 
-// module
-// 导出对象，上面记录了一些当前模块信息，父模块信息，以及node_modules查找路径
-// console.log(module)
+// cache
+// 被引入过的模块缓存
+// console.log(require.cache)
 
-// process
-// 进程对象
-// console.log(process)
-
-// process exit()
-// 进程退出，触发后node进程终止
-// setTimeout(() => {
-//   console.log("setTimeout");
-// });
-// process.exit();
-
-// process argv
-// 命令行参数，例如运行下node ./ a b c d 试试
-// console.log(process.argv)
-
-// process cwd()
-// 返回node进程当前工作目录（绝对路径）
-// console.log(process.cwd())
-
-// process env
-// 环境对象
-// console.log(process.env)
-
-// process kill()
-// 杀掉进程，一下传入的为PID，在活动监视器里可以找到目前活动进程，可以试图杀掉
-// process.kill(56254)
-
-// process pid
-// 当前进程PID
-// process.kill(process.pid)
-
+// main
+// 启动进程的入口文件信息
+// console.log(require.main)
 
