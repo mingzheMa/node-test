@@ -1,38 +1,54 @@
-const net = require("net");
-const fs = require("fs");
+const http = require("http");
 const path = require("path");
+const URL = require("url").URL;
+const fs = require("fs");
 
-// 创建一个TCP/IP服务（配置，监听函数）
-const server = net.createServer(() => {
-  console.log("server is connect");
-});
+const server = http.createServer();
 
-// 监听端口
-server.listen(9527);
-
-// 监听端口后触发
-server.on("listening", () => {
+server.listen(9527, () => {
   console.log("server listen 9527");
 });
 
-// 监听有连接服务事件
-server.on("connection", async socket => {
-  // 读取文件
-  const imgPath = path.resolve(__dirname, "./img/wuyanzu.jpeg");
-  const bodyBuffer = await fs.promises.readFile(imgPath);
+async function isStat(path) {
+  try {
+    return await fs.promises.stat(path);
+  } catch (error) {
+    return null;
+  }
+}
 
-  // 头部buffer
-  const headBuffer = Buffer.from(`HTTP/1.1 200 OK
-Content-Type: image/jpeg
+async function getFileStream(reqPath) {
+  const filePath = path.resolve(__dirname, "./public", reqPath.substr(1));
+  const stat = await isStat(filePath);
+  if (!stat) {
+    return null;
+  } else if (stat.isDirectory()) {
+    return await getFileStream(`${reqPath.substr(1)}/index.html`);
+  } else if (stat.isFile()) {
+    return fs.createReadStream(filePath);
+    // return await fs.promises.readFile(filePath, {
+    //   encoding: "utf-8"
+    // });
+  }
+}
 
-`);
+server.on("request", async (req, res) => {
+  const urlObj = new URL(req.url, "http://localhost:9527");
+  const fileStream = await getFileStream(urlObj.pathname);
+  if (fileStream) {
+    let data = "";
+    fileStream.on("data", chunk => {
+      data += chunk;
+    });
 
-  // 合并buffer
-  const result = Buffer.concat([headBuffer, bodyBuffer]);
-
-  // 写入流
-  socket.write(result);
-
-  // 结束
-  socket.end();
+    fileStream.on("end", () => {
+      res.write(data);
+      res.end();
+    });
+  } else {
+    res.statusCode = 404;
+    res.statusMessage = "error! error!";
+    res.write("not fund");
+    res.end();
+  }
 });
