@@ -1,62 +1,91 @@
--- 1.以公司为单位举办一场比赛
--- 查询出对战表
-SELECT c1.name as '主场', c2.name as '客场'
-FROM company as c1,company as c2 
-WHERE c1.id != c2.id
-ORDER BY c1.name
-
--- 2. 显示出所有员工的姓名、性别（使用男或女显示）、入职时间、薪水、所属部门（显示部门名称）、所属公司（显示公司名称）
-SELECT 
-e.`name` as '姓名',
-CASE 
-	WHEN e.ismale=1 THEN '男'
-	ELSE '女'
-END as '性别',
-e.joinDate as '入职时间',
-e.salary as '薪水',
+-- 1. 查询渡一每个部门的员工数量
+SELECT
 d.`name` as '部门',
-c.`name` as '公司'
-FROM employee as e INNER JOIN department as d ON e.deptId=d.id
-INNER JOIN company as c ON d.companyId=c.id
-
--- 3. 查询腾讯和蚂蚁金服的所有员工姓名、性别、入职时间、部门名、公司名
-SELECT 
-e.`name` as ename,
-CASE 
-	WHEN e.ismale=1 THEN '男'
-	ELSE '女'
-END as eismale,
-e.joinDate as ejoindate,
-d.`name` as dname,
-c.`name` as cname
+COUNT(e.id) as '员工数量'
 FROM company as c INNER JOIN department as d ON c.id=d.companyId
 INNER JOIN employee as e ON d.id=e.deptId
-WHERE c.`name` IN ('腾讯科技','蚂蚁金服')
+WHERE c.`name`='渡一教育'
+GROUP BY d.name
 
--- 4. 查询渡一教学部的所有员工姓名、性别、入职时间、部门名、公司名
-SELECT 
-e.`name` as ename,
-CASE 
-	WHEN e.ismale=1 THEN '男'
-	ELSE '女'
-END as eismale,
-e.joinDate as ejoindate,
-d.`name` as dname,
-c.`name` as cname
+-- 2. 查询每个公司的员工数量
+SELECT
+c.`name` as '公司',
+COUNT(e.id) as '员工数量'
 FROM company as c INNER JOIN department as d ON c.id=d.companyId
 INNER JOIN employee as e ON d.id=e.deptId
-WHERE c.`name`="渡一教育"
-AND d.name="教学部"
+GROUP BY c.name
 
--- 5. 列出所有公司员工居住的地址（要去掉重复）
-SELECT 
-location
-FROM employee
-WHERE location IS NOT NULL
-GROUP BY location
+-- 3. 查询所有公司5年内入职的居住在万家湾的女员工数量
+SELECT
+c.`name` as '公司',
+COUNT(e.id) as '员工数量'
+FROM company as c INNER JOIN department as d ON c.id=d.companyId
+INNER JOIN employee as e ON d.id=e.deptId
+WHERE TIMESTAMPDIFF(YEAR,e.joinDate,CURDATE())<=5
+AND e.ismale=0
+AND e.location='万家湾'
+GROUP BY c.name
 
-SELECT 
-DISTINCT location
-FROM employee
-WHERE location IS NOT NULL
+-- 4. 查询渡一所有员工分布在哪些居住地，每个居住地的数量
+SELECT
+e.location as '地址',
+COUNT(e.id) as '员工数量'
+FROM company as c INNER JOIN department as d ON c.id=d.companyId
+INNER JOIN employee as e ON d.id=e.deptId
+WHERE c.`name`='渡一教育'
+GROUP BY e.location
+
+-- 5. 查询员工人数大于200的公司信息
+SELECT * 
+FROM company
+WHERE id in (
+SELECT
+c.id
+FROM company as c INNER JOIN department as d ON c.id=d.companyId
+INNER JOIN employee as e ON d.id=e.deptId
+GROUP BY c.id
+HAVING COUNT(e.id)>200
+)
+
+-- 6. 查询渡一公司里比独一平均工资高的员工
+SELECT
+*
+FROM company as c INNER JOIN department as d ON c.id=d.companyId
+INNER JOIN employee as e ON d.id=e.deptId
+WHERE c.`name`='渡一教育'
+AND e.salary>(
+	SELECT
+	AVG(e.salary)
+	FROM company as c INNER JOIN department as d ON c.id=d.companyId
+	INNER JOIN employee as e ON d.id=e.deptId
+	WHERE c.`name`='渡一教育'
+)
+
+-- 7. 查询渡一所有名字为两个字和三个字的员工对应人数
+SELECT
+CHAR_LENGTH(e.`name`) as namelength,
+COUNT(e.id)
+FROM company as c INNER JOIN department as d ON c.id=d.companyId
+INNER JOIN employee as e ON d.id=e.deptId
+WHERE c.`name`='渡一教育'
+GROUP BY CHAR_LENGTH(e.`name`)
+HAVING namelength IN (2,3)
+
+-- 8. 查询每个公司每个月的总支出薪水，并按照从低到高排序
+SELECT
+c.`name`,
+SUM(e.salary) as allsalary
+FROM company as c INNER JOIN department as d ON c.id=d.companyId
+INNER JOIN employee as e ON d.id=e.deptId
+GROUP BY c.`name`
+ORDER BY allsalary
+
+
+
+
+
+
+
+
+
 
