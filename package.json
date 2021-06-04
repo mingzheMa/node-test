@@ -18,6 +18,7 @@
   "homepage": "https://github.com/mingzheMa/node-test#readme",
   "dependencies": {
     "@types/node": "^15.0.2",
-    "mysql2": "^2.2.5"
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2"
   }
 }
