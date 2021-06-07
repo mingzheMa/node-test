@@ -1,6 +1,12 @@
-require("./modules/index");
+// require("./modules/index");
 // const adminServ = require("./services/admin");
 // const bookServ = require("./services/book");
+
+// 模拟数据
+// require("./mock/admin");
+// require("./mock/book");
+// require("./mock/class");
+// require("./mock/student");
 
 // 测试连接
 // async function test() {

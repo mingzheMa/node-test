@@ -4,7 +4,7 @@ require("./Book");
 require("./Student");
 
 const db = require("./db");
-// db.sync({
-//   force: true
-// });
-db.sync();
+db.sync({
+  alter: true
+});
+// db.sync();
