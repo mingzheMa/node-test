@@ -14,5 +14,6 @@ const adminServ = require("./services/admin");
 
 // test();
 adminServ
-  .findAndCountAll(1, 100, { nick_name: "芳" })
-  .then(res => console.log(res));
+  .login(111, 1111)
+  .then(res => console.log(res))
+  .catch(err => console.log(err));
