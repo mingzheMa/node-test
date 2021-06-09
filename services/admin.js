@@ -1,4 +1,5 @@
 const Admin = require("../modules/Admin");
+const selectFilterWhere = require("../utils/selectFilterWhere");
 
 // 通过创建对象实例添加，创建出的对象实例在调用save前可以修改实例上的属性，并使用save保存
 // exports.create = async adminObj => {
@@ -34,8 +35,11 @@ exports.update = async (adminObj, adminId) => {
 };
 
 // 查（按分页）
-exports.findAndCountAll = async (page, limit) => {
+exports.findAndCountAll = async (page, limit, filterForm = {}) => {
+  const where = selectFilterWhere(filterForm);
+
   const ins = await Admin.findAndCountAll({
+    where,
     limit,
     offset: (page - 1) * limit
   });

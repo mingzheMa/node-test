@@ -1,5 +1,5 @@
 require("./modules/index");
-// const adminServ = require("./services/admin");
+const adminServ = require("./services/admin");
 // const bookServ = require("./services/book");
 
 // 测试连接
@@ -13,3 +13,6 @@ require("./modules/index");
 // }
 
 // test();
+adminServ
+  .findAndCountAll(1, 100, { nick_name: "芳" })
+  .then(res => console.log(res));

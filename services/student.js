@@ -27,8 +27,11 @@ exports.update = async (studentObj, studentId) => {
 };
 
 // 查（按分页）
-exports.findAndCountAll = async (page, limit) => {
-  const ins = await Student.findAndCountAll({
+exports.findAndCountAll = async (page, limit, filterForm = {}) => {
+  const where = selectFilterWhere(filterForm);
+
+  const ins = await Admin.findAndCountAll({
+    where,
     limit,
     offset: (page - 1) * limit
   });

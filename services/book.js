@@ -1,4 +1,5 @@
 const Book = require("../modules/Book");
+const selectFilterWhere = require("../utils/selectFilterWhere");
 
 // 增
 exports.create = async bookObj => {
@@ -27,8 +28,11 @@ exports.update = async (bookObj, bookId) => {
 };
 
 // 查（按分页）
-exports.findAndCountAll = async (page, limit) => {
+exports.findAndCountAll = async (page, limit, filterForm = {}) => {
+  const where = selectFilterWhere(filterForm);
+
   const ins = await Book.findAndCountAll({
+    where,
     limit,
     offset: (page - 1) * limit
   });
