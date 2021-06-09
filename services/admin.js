@@ -1,3 +1,5 @@
+const md5 = require("md5");
+
 const Admin = require("../modules/Admin");
 const selectFilterWhere = require("../utils/selectFilterWhere");
 const error = require("../utils/error");
@@ -21,7 +23,10 @@ exports.create = async adminObj => {
   if (hasAdmin) {
     return Promise.reject(error[1001]);
   } else {
-    const ins = await Admin.create(adminObj);
+    const ins = await Admin.create({
+      ...adminObj,
+      password: md5(adminObj.password)
+    });
     return ins.toJSON();
   }
 };
@@ -75,7 +80,7 @@ exports.login = async (userName, password) => {
     attributes: ["id"],
     where: {
       user_name: userName,
-      user_name: password
+      password: md5(password)
     }
   });
 

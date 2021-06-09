@@ -1,5 +1,5 @@
 // require("./modules/index");
-// const adminServ = require("./services/admin");
+const adminServ = require("./services/admin");
 // const bookServ = require("./services/book");
 
 // 模拟数据
@@ -19,7 +19,16 @@
 // }
 
 // test();
-adminServ
-  .login(111, 1111)
-  .then(res => console.log(res))
-  .catch(err => console.log(err));
+// adminServ
+//   .login("222", "222")
+//   .then(res => console.log(res))
+//   .catch(err => console.log(err));
+
+// adminServ
+//   .create({
+//     user_name: "222",
+//     password: "222",
+//     nick_name: "222"
+//   })
+//   .then(res => console.log(res))
+//   .catch(err => console.log(err));
