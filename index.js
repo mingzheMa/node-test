@@ -19,3 +19,7 @@
 // }
 
 // test();
+adminServ
+  .login(111, 1111)
+  .then(res => console.log(res))
+  .catch(err => console.log(err));

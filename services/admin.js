@@ -1,4 +1,6 @@
 const Admin = require("../modules/Admin");
+const selectFilterWhere = require("../utils/selectFilterWhere");
+const error = require("../utils/error");
 
 // 通过创建对象实例添加，创建出的对象实例在调用save前可以修改实例上的属性，并使用save保存
 // exports.create = async adminObj => {
@@ -9,8 +11,19 @@ const Admin = require("../modules/Admin");
 // 通过模型实例增，删，改，查
 // 增
 exports.create = async adminObj => {
-  const ins = await Admin.create(adminObj);
-  return ins.toJSON();
+  const hasAdmin = await Admin.findOne({
+    attributes: ["id"],
+    where: {
+      user_name: adminObj.user_name
+    }
+  });
+
+  if (hasAdmin) {
+    return Promise.reject(error[1001]);
+  } else {
+    const ins = await Admin.create(adminObj);
+    return ins.toJSON();
+  }
 };
 
 // 删
@@ -34,8 +47,11 @@ exports.update = async (adminObj, adminId) => {
 };
 
 // 查（按分页）
-exports.findAndCountAll = async (page, limit) => {
+exports.findAndCountAll = async (page, limit, filterForm = {}) => {
+  const where = selectFilterWhere(filterForm);
+
   const ins = await Admin.findAndCountAll({
+    where,
     limit,
     offset: (page - 1) * limit
   });
@@ -51,4 +67,19 @@ exports.findAndCountAll = async (page, limit) => {
 exports.findByPk = async adminId => {
   const ins = await Admin.findByPk(adminId);
   return ins && ins.toJSON();
+};
+
+// 登录
+exports.login = async (userName, password) => {
+  const userId = await Admin.findOne({
+    attributes: ["id"],
+    where: {
+      user_name: userName,
+      user_name: password
+    }
+  });
+
+  if (!userId) {
+    return Promise.reject(error[1002]);
+  }
 };

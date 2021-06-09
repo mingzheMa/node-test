@@ -1,4 +1,5 @@
 const Class = require("../modules/Class");
+const selectFilterWhere = require("../utils/selectFilterWhere");
 
 // 增
 exports.create = async classObj => {
@@ -27,8 +28,11 @@ exports.update = async (classObj, classId) => {
 };
 
 // 查（按分页）
-exports.findAndCountAll = async (page, limit) => {
+exports.findAndCountAll = async (page, limit, filterForm = {}) => {
+  const where = selectFilterWhere(filterForm);
+
   const ins = await Class.findAndCountAll({
+    where,
     limit,
     offset: (page - 1) * limit
   });
