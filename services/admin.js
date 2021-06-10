@@ -23,7 +23,7 @@ const tableRules = {
       allowEmpty: false
     }
   },
-  user_name: {
+  nick_name: {
     type: "string",
     length: {
       minimum: 2
@@ -56,10 +56,7 @@ exports.create = async adminObj => {
   if (hasAdmin) {
     return Promise.reject(error[1001]);
   } else {
-    const ins = await Admin.create({
-      ...adminObj,
-      password: md5(adminObj.password)
-    });
+    const ins = await Admin.create(adminObj);
     return ins.toJSON();
   }
 };
