@@ -1,6 +1,8 @@
 // require("./modules/index");
-const adminServ = require("./services/admin");
+// const adminServ = require("./services/admin");
 // const bookServ = require("./services/book");
+// const classServ = require("./services/class");
+const studentServ = require("./services/student");
 
 // 模拟数据
 // require("./mock/admin");
@@ -19,16 +21,14 @@ const adminServ = require("./services/admin");
 // }
 
 // test();
-// adminServ
-//   .login("222", "222")
-//   .then(res => console.log(res))
-//   .catch(err => console.log(err));
 
-// adminServ
+// studentServ
 //   .create({
-//     user_name: "222",
-//     password: "222",
-//     nick_name: "222"
+//     name: "新学生",
+//     birth_date:"2020-01-01",
+//     sex:true,
+//     mobile:"11111111111",
+//     class_id:6
 //   })
 //   .then(res => console.log(res))
 //   .catch(err => console.log(err));

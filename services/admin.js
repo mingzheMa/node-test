@@ -1,8 +1,38 @@
 const md5 = require("md5");
+const validate = require("validate.js");
 
 const Admin = require("../modules/Admin");
 const selectFilterWhere = require("../utils/selectFilterWhere");
 const error = require("../utils/error");
+
+// 表字段校验
+const tableRules = {
+  user_name: {
+    type: "string",
+    length: {
+      minimum: 2,
+      maximum: 16
+    },
+    presence: {
+      allowEmpty: false
+    }
+  },
+  password: {
+    type: "string",
+    presence: {
+      allowEmpty: false
+    }
+  },
+  user_name: {
+    type: "string",
+    length: {
+      minimum: 2
+    },
+    presence: {
+      allowEmpty: false
+    }
+  }
+};
 
 // 通过创建对象实例添加，创建出的对象实例在调用save前可以修改实例上的属性，并使用save保存
 // exports.create = async adminObj => {
@@ -13,6 +43,9 @@ const error = require("../utils/error");
 // 通过模型实例增，删，改，查
 // 增
 exports.create = async adminObj => {
+  await validate.async(adminObj, tableRules);
+
+  // 查看用户是否存在
   const hasAdmin = await Admin.findOne({
     attributes: ["id"],
     where: {
@@ -33,22 +66,38 @@ exports.create = async adminObj => {
 
 // 删
 exports.destroy = async adminId => {
-  return await Admin.destroy({
-    where: {
-      id: adminId
-    },
-    limit: 1
-  });
+  // 查看用户是否存在
+  const hasAdmin = await Admin.findByPk(adminId);
+
+  if (hasAdmin) {
+    return await Admin.destroy({
+      where: {
+        id: adminId
+      },
+      limit: 1
+    });
+  } else {
+    return Promise.reject(error[1003]);
+  }
 };
 
 // 改
 exports.update = async (adminObj, adminId) => {
-  return await Admin.update(adminObj, {
-    where: {
-      id: adminId
-    },
-    limit: 1
-  });
+  await validate.async(adminObj, tableRules);
+
+  // 查看用户是否存在
+  const hasAdmin = await Admin.findByPk(adminId);
+
+  if (hasAdmin) {
+    return await Admin.update(adminObj, {
+      where: {
+        id: adminId
+      },
+      limit: 1
+    });
+  } else {
+    return Promise.reject(error[1003]);
+  }
 };
 
 // 查（按分页）
@@ -76,6 +125,17 @@ exports.findByPk = async adminId => {
 
 // 登录
 exports.login = async (userName, password) => {
+  await validate.async(
+    {
+      user_name: userName,
+      password
+    },
+    {
+      user_name: tableRules.user_name,
+      password: tableRules.password
+    }
+  );
+
   const userId = await Admin.findOne({
     attributes: ["id"],
     where: {

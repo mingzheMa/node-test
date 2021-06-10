@@ -19,6 +19,10 @@ module.exports = db.define(
     mobile: {
       type: DataTypes.STRING(11),
       allowNull: false
+    },
+    class_id: {
+      type: DataTypes.NUMBER,
+      allowNull: false
     }
   },
   {
