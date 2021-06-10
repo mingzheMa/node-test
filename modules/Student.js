@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("./db");
+const dayjs = require("dayjs");
 
 module.exports = db.define(
   "Student",
@@ -10,7 +11,23 @@ module.exports = db.define(
     },
     birth_date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      get() {
+        const date = this.getDataValue("birth_date");
+        return dayjs(date).local().format();
+      },
+      set(date) {
+        this.setDataValue("birth_date", dayjs(date).utc().format());
+      }
+    },
+    age: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return dayjs().diff(dayjs(this.birth_date), "year");
+      },
+      set() {
+        throw "不要尝试设置 `age` 的值!";
+      }
     },
     sex: {
       type: DataTypes.BOOLEAN,
@@ -18,10 +35,6 @@ module.exports = db.define(
     },
     mobile: {
       type: DataTypes.STRING(11),
-      allowNull: false
-    },
-    class_id: {
-      type: DataTypes.NUMBER,
       allowNull: false
     }
   },

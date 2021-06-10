@@ -1,4 +1,4 @@
-// require("./modules/index");
+require("./init");
 // const adminServ = require("./services/admin");
 // const bookServ = require("./services/book");
 // const classServ = require("./services/class");
@@ -22,13 +22,7 @@ const studentServ = require("./services/student");
 
 // test();
 
-// studentServ
-//   .create({
-//     name: "新学生",
-//     birth_date:"2020-01-01",
-//     sex:true,
-//     mobile:"11111111111",
-//     class_id:6
-//   })
-//   .then(res => console.log(res))
-//   .catch(err => console.log(err));
+studentServ
+  .findByPk(11)
+  .then(res => console.log(res))
+  .catch(err => console.log(err));

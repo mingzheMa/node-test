@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("./db");
+const md5 = require("md5");
 
 module.exports = db.define(
   "Admin",
@@ -10,7 +11,11 @@ module.exports = db.define(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      set(val) {
+        console.log(val)
+        this.setDataValue("password", md5(val));
+      }
     },
     nick_name: {
       type: DataTypes.STRING,
