@@ -19,6 +19,7 @@
   "dependencies": {
     "@types/node": "^15.0.2",
     "dayjs": "^1.10.5",
+    "express": "^4.17.1",
     "log4js": "^6.3.0",
     "md5": "^2.3.0",
     "mockjs": "^1.1.0",

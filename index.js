@@ -2,7 +2,7 @@ require("./_init");
 // const adminServ = require("./services/admin");
 // const bookServ = require("./services/book");
 // const classServ = require("./services/class");
-const studentServ = require("./services/student");
+// const studentServ = require("./services/student");
 
 // 模拟数据
 // require("./mock/admin");
@@ -21,8 +21,3 @@ const studentServ = require("./services/student");
 // }
 
 // test();
-
-studentServ
-  .findByPk(1111)
-  .then(r => console.log(r))
-  .catch(e => console.log(e));
