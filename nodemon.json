@@ -1,0 +1,3 @@
+{
+  "watch": ["modules/", "plugin/", "routers/", "services/", "utils/"]
+}
