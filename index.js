@@ -1,4 +1,4 @@
-require("./init");
+require("./_init");
 // const adminServ = require("./services/admin");
 // const bookServ = require("./services/book");
 // const classServ = require("./services/class");
@@ -23,6 +23,6 @@ const studentServ = require("./services/student");
 // test();
 
 studentServ
-  .findByPk(11)
-  .then(res => console.log(res))
-  .catch(err => console.log(err));
+  .findByPk(1111)
+  .then(r => console.log(r))
+  .catch(e => console.log(e));
