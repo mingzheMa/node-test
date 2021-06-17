@@ -3,6 +3,7 @@ const validate = require("validate.js");
 
 const Admin = require("../modules/Admin");
 const selectFilterWhere = require("../utils/selectFilterWhere");
+const selectFilterOrder = require("../utils/selectFilterOrder");
 const error = require("../utils/error");
 
 // 表字段校验
@@ -79,7 +80,7 @@ exports.destroy = async adminId => {
 };
 
 // 改
-exports.update = async (adminObj, adminId) => {
+exports.update = async (adminId, adminObj) => {
   await validate.async(adminObj, tableRules);
 
   // 查看用户是否存在
@@ -98,17 +99,24 @@ exports.update = async (adminObj, adminId) => {
 };
 
 // 查（按分页）
-exports.findAndCountAll = async (page, limit, filterForm = {}) => {
+exports.findAndCountAll = async ({
+  page = 1,
+  limit = 10,
+  order = "",
+  ...filterForm
+}) => {
   const where = selectFilterWhere(filterForm);
-
+  const newOrder = selectFilterOrder(order);
   const ins = await Admin.findAndCountAll({
     where,
-    limit,
+    order: newOrder,
+    limit: +limit,
     offset: (page - 1) * limit
   });
 
   return {
-    page,
+    page: +page,
+    limit: +limit,
     count: ins.count,
     rows: ins.rows.map(r => r.toJSON())
   };
@@ -121,10 +129,10 @@ exports.findByPk = async adminId => {
 };
 
 // 登录
-exports.login = async (userName, password) => {
+exports.login = async ({ user_name, password }) => {
   await validate.async(
     {
-      user_name: userName,
+      user_name,
       password
     },
     {
@@ -133,15 +141,12 @@ exports.login = async (userName, password) => {
     }
   );
 
-  const userId = await Admin.findOne({
-    attributes: ["id"],
+  const userInfo = await Admin.findOne({
     where: {
-      user_name: userName,
+      user_name,
       password: md5(password)
     }
   });
 
-  if (!userId) {
-    return Promise.reject(error[1002]);
-  }
+  return userInfo || Promise.reject(error[1002]);
 };

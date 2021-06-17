@@ -6,7 +6,7 @@ const appenders = {
   sql: {
     appenders: ["sql"],
     type: "dateFile",
-    filename: path.resolve(__dirname, "../logs/sql/.log"),
+    filename: path.resolve(__dirname, "../logs/sql/sql.log"),
     maxLogSize: 1024 * 1024,
     keepFileExt: true,
     layout: {

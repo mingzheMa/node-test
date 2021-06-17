@@ -1,8 +1,11 @@
 const express = require("express");
 const path = require("path");
+
 const errorMiddleware = require("./middleware/error");
+const adminRouter = require("../api/admin");
+
+
 const app = express();
-const port = 9527;
 
 // 静态资源中间件
 app.use(express.static(path.resolve(__dirname, "../client")));
@@ -20,12 +23,12 @@ app.use(express.text());
 // 处理请求体中的buffer格式参数
 app.use(express.raw());
 
-app.post("/api/test", (res, req) => {
-  console.log(res.body);
-});
+
+app.use("/api/admin",adminRouter)
 
 app.use(errorMiddleware);
 
+const port = 9527;
 app.listen(port, () => {
   console.log("serve listen 9527");
 });

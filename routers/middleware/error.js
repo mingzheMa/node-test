@@ -2,11 +2,10 @@ const util = require("util");
 
 module.exports = function (err, req, res, next) {
   if (util.types.isNativeError(err)) {
-    res.send({
-      code: 500,
-      msg: err.message
-    });
+    res.status(500).send(err.message);
   } else {
-    res.send(msg);
+    res
+      .status(err.code || 400)
+      .send(err.message ? err : { code: 400, message: err });
   }
 };

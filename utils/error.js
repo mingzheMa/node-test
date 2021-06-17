@@ -1,41 +1,41 @@
 module.exports = {
   1001: {
     code: 400,
-    msg: "用户已存在"
+    message: "用户已存在"
   },
   1002: {
     code: 400,
-    msg: "账号或密码错误"
+    message: "账号或密码错误"
   },
   1003: {
     code: 400,
-    msg: "用户不存在"
+    message: "用户不存在"
   },
 
   2001: {
     code: 400,
-    msg: "书籍已存在"
+    message: "书籍已存在"
   },
   2003: {
     code: 400,
-    msg: "书籍不存在"
+    message: "书籍不存在"
   },
 
   3001: {
     code: 400,
-    msg: "班级已存在"
+    message: "班级已存在"
   },
   3003: {
     code: 400,
-    msg: "班级不存在"
+    message: "班级不存在"
   },
 
   4001: {
     code: 400,
-    msg: "学生已存在"
+    message: "学生已存在"
   },
   4003: {
     code: 400,
-    msg: "学生不存在"
+    message: "学生不存在"
   }
 };
