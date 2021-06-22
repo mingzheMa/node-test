@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>test</title>
+  </head>
+  <body>
+    <div id="corsBox"></div>
+
+    <script>
+      // 简单请求
+      // fetch("http://localhost:9527/api/cors", {
+      //   method: "GET"
+      // }).then(res => {
+      //   console.log(res.body);
+      // });
+
+      // 预检请求
+      fetch("http://localhost:9527/api/cors", {
+        method: "POST",
+        headers: {
+          a: 1,
+          b: 2,
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          a: 1,
+          b: 1
+        })
+      }).then(res => {
+        console.log(res.body);
+      });
+
+      // 附带身份凭证请求（未实现）
+      // fetch("http://localhost:9527/api/cors", {
+      //   credentials: "include"
+      // }).then(res => {
+      //   console.log(res.body);
+      // });
+    </script>
+  </body>
+</html>

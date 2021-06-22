@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 const errorMiddleware = require("./middleware/error");
 const tokenMiddleware = require("./middleware/token");
@@ -15,9 +16,46 @@ const app = express();
 // 局限性：由于script只能发送get请求所以，其他请求方式不适用
 // 格式混乱：因为content-type只能是JavaScript，所以没法约定格式
 app.get("/api/jsonp", (req, res) => {
-  res.set("Content-Type","application/javascript")
-  res.send("callback('jsonpdata...')")
+  res.set("Content-Type", "application/javascript");
+  res.send("callback('jsonpdata...')");
 });
+
+// cors跨域处理
+// app.use("/api/cors", (req, res) => {
+//   // 处理简单请求
+//   // 设置允许跨域的源
+//   res.set("Access-Control-Allow-Origin", req.headers.origin);
+
+//   // 处理预检请求
+//   if (req.method === "OPTIONS") {
+//     // 设置允许跨域的方法
+//     res.set(
+//       "Access-Control-Allow-Methods",
+//       req.headers["access-control-request-method"]
+//     );
+//     // 设置允许修改的请求头
+//     res.set(
+//       "Access-Control-Allow-Headers",
+//       req.headers["access-control-request-headers"]
+//     );
+//     // 设置预检请求的有效时间(秒)，过了时间需要重新预检请求，如果没有超过时间则不需要
+//     res.set("Access-Control-Max-Age", 3600);
+//   }
+
+//   // 处理附带身份凭证（cookie）的请求
+//   // 设置允许附加cookie
+//   res.set("Access-Control-Allow-Credentials", true);
+
+//   res.send("corsData");
+// });
+
+// cors跨域处理
+app.use("/api/cors", cors(), (req, res) => {
+  res.send("corsData");
+});
+
+// 跨域中间件
+app.use(cors())
 
 // 静态资源中间件
 app.use(express.static(path.resolve(__dirname, "../client")));
