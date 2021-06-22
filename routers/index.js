@@ -13,6 +13,7 @@ const app = express();
 
 // jsonp跨域处理
 // 局限性：由于script只能发送get请求所以，其他请求方式不适用
+// 格式混乱：因为content-type只能是JavaScript，所以没法约定格式
 app.get("/api/jsonp", (req, res) => {
   res.set("Content-Type","application/javascript")
   res.send("callback('jsonpdata...')")
