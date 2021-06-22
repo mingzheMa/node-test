@@ -19,12 +19,14 @@
   "dependencies": {
     "@types/node": "^15.0.2",
     "cookie": "^0.4.1",
+    "cookie-parser": "^1.4.5",
     "dayjs": "^1.10.5",
     "express": "^4.17.1",
     "log4js": "^6.3.0",
     "md5": "^2.3.0",
     "mockjs": "^1.1.0",
     "mysql2": "^2.2.5",
+    "path-to-regexp": "^6.2.0",
     "sequelize": "^6.6.2",
     "validate.js": "^0.13.1"
   }

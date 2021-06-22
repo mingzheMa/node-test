@@ -1,5 +1,4 @@
 const express = require("express");
-const cookie = require("cookie");
 
 const nextCatch = require("../../utils/nextCatch");
 const adminServices = require("../../services/admin");
@@ -41,21 +40,6 @@ router.put(
   "/:id",
   nextCatch(async (req, res) => {
     const data = await adminServices.update(req.params.id, req.body);
-    res.send(data);
-  })
-);
-
-router.post(
-  "/login",
-  nextCatch(async (req, res) => {
-    const data = await adminServices.login(req.body);
-    res.set(
-      "set-cookie",
-      cookie.serialize("token", data.id, {
-        path: "/",
-        maxAge: 86400
-      })
-    );
     res.send(data);
   })
 );

@@ -1,4 +1,9 @@
 module.exports = {
+  0001: {
+    code: 401,
+    message: "请重新登录"
+  },
+
   1001: {
     code: 400,
     message: "用户已存在"

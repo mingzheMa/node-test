@@ -1,5 +1,6 @@
 const Class = require("../modules/Class");
 const selectFilterWhere = require("../utils/selectFilterWhere");
+const selectFilterOrder = require("../utils/selectFilterOrder");
 const validate = require("validate.js");
 const error = require("../utils/error");
 
@@ -58,17 +59,24 @@ exports.update = async (classObj, classId) => {
 };
 
 // 查（按分页）
-exports.findAndCountAll = async (page, limit, filterForm = {}) => {
+exports.findAndCountAll = async ({
+  page = 1,
+  limit = 10,
+  order = "",
+  ...filterForm
+}) => {
   const where = selectFilterWhere(filterForm);
-
+  const newOrder = selectFilterOrder(order);
   const ins = await Class.findAndCountAll({
     where,
-    limit,
+    order: newOrder,
+    limit: +limit,
     offset: (page - 1) * limit
   });
 
   return {
-    page,
+    page: +page,
+    limit: +limit,
     count: ins.count,
     rows: ins.rows.map(r => r.toJSON())
   };

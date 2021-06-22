@@ -1,9 +1,13 @@
 const express = require("express");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 
 const errorMiddleware = require("./middleware/error");
-const adminRouter = require("../api/admin");
+const tokenMiddleware = require("./middleware/token");
 
+const loginRouter = require("../api/login");
+const adminRouter = require("../api/admin");
+const studentRouter = require("../api/student");
 
 const app = express();
 
@@ -23,9 +27,17 @@ app.use(express.text());
 // 处理请求体中的buffer格式参数
 app.use(express.raw());
 
+// 处理cookie，结果放置res.cookies中
+app.use(cookieParser());
 
-app.use("/api/admin",adminRouter)
+// 验证token
+app.use(tokenMiddleware);
 
+app.use("/api/login", loginRouter);
+app.use("/api/admin", adminRouter);
+app.use("/api/student", studentRouter);
+
+// 错误处理
 app.use(errorMiddleware);
 
 const port = 9527;

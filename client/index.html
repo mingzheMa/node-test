@@ -8,8 +8,39 @@
     <title>test</title>
   </head>
   <body>
-    test
+    <div>
+      <label>
+        username：
+        <input id="username" type="text" />
+      </label>
 
-    <script src="./js/index.js"></script>
+      <label>
+        password：
+        <input id="password" type="password" />
+      </label>
+
+      <button id="loginBtn">login</button>
+    </div>
+
+    <div class="studentsBox">
+      <label>
+        page：
+        <input id="page" type="text" value="1"/>
+      </label>
+
+      <label>
+        pagesize：
+        <input id="pagesize" type="text" value="10"/>
+      </label>
+
+      <button id="getStudentsBtn">get students</button>
+      <ul id="students">
+        not find
+      </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./js/login.js"></script>
+    <script src="./js/getStudents.js"></script>
   </body>
 </html>

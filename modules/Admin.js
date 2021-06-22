@@ -13,7 +13,6 @@ module.exports = db.define(
       type: DataTypes.STRING,
       allowNull: false,
       set(val) {
-        console.log(val)
         this.setDataValue("password", md5(val));
       }
     },
