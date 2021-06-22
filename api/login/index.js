@@ -11,13 +11,18 @@ router.post(
   nextCatch(async (req, res) => {
     const data = await adminServices.login(req.body);
 
-    res.set(
-      "set-cookie",
-      cookie.serialize("token", encrypt(data.id.toString()), {
-        path: "/",
-        maxAge: 86400
-      })
-    );
+    // cookie校验
+    // res.set(
+    //   "set-cookie",
+    //   cookie.serialize("token", encrypt(data.id.toString()), {
+    //     path: "/",
+    //     maxAge: 86400
+    //   })
+    // );
+
+    // session校验
+    req.session.user = data;
+
     res.send(data);
   })
 );

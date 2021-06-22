@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const session = require("express-session");
 
 const errorMiddleware = require("./middleware/error");
 const tokenMiddleware = require("./middleware/token");
@@ -55,7 +56,7 @@ app.use("/api/cors", cors(), (req, res) => {
 });
 
 // 跨域中间件
-app.use(cors())
+app.use(cors());
 
 // 静态资源中间件
 app.use(express.static(path.resolve(__dirname, "../client")));
@@ -75,6 +76,18 @@ app.use(express.raw());
 
 // 处理cookie，结果放置res.cookies中
 app.use(cookieParser());
+
+// session处理中间件
+app.use(
+  session({
+    cookie: {
+      path: "/",
+      maxAge: 86400
+    },
+    name: "token",
+    secret: "key"
+  })
+);
 
 // 验证token
 app.use(tokenMiddleware);

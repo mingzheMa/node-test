@@ -17,12 +17,21 @@ module.exports = function (req, res, next) {
     return;
   }
 
-  // 如果需要验证
-  const token = req.headers.authorization || req.cookies.token;
-  if (token) {
+  // cookie验证方法
+  // const token = req.headers.authorization || req.cookies.token;
+  // if (token) {
+  //   // 校验token
+  //   const userId = decrypt(token);
+  //   console.log("userId",userId);
+  //   next();
+  // } else {
+  //   next(error[0001]);
+  // }
+
+  // session验证方法
+  if (req.session.user) {
     // 校验token
-    const userId = decrypt(token);
-    console.log("userId",userId);
+    console.log("login user", req.session.user);
     next();
   } else {
     next(error[0001]);
