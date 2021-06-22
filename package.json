@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index --config nodemon.json"
+    "dev": "nodemon index --config nodemon.json",
+    "test": "nodemon --inspect index --config nodemon.json"
   },
   "repository": {
     "type": "git",
