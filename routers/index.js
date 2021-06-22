@@ -11,6 +11,13 @@ const studentRouter = require("../api/student");
 
 const app = express();
 
+// jsonp跨域处理
+// 局限性：由于script只能发送get请求所以，其他请求方式不适用
+app.get("/api/jsonp", (req, res) => {
+  res.set("Content-Type","application/javascript")
+  res.send("callback('jsonpdata...')")
+});
+
 // 静态资源中间件
 app.use(express.static(path.resolve(__dirname, "../client")));
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>test</title>
+  </head>
+  <body>
+    <div id="jsonpBox"></div>
+    <script>
+      const dom = document.getElementById("jsonpBox")
+      function callback(jsonpData) {
+        jsonpBox.innerHTML = jsonpData
+      }
+    </script>
+    <!-- script标签获取到的js数据会默认执行，服务端返回一个callback函数，参数为返回数据 -->
+    <script src="http://localhost:9527/api/jsonp"></script>
+  </body>
+</html>
