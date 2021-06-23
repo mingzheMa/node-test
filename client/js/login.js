@@ -7,7 +7,7 @@ loginBtnDom.addEventListener("click", async () => {
   const password = passwordDom.value;
 
   try {
-    const res = await axios.post("/api/login", {
+    const res = await axios.post("/api/auth/login", {
       user_name,
       password
     });

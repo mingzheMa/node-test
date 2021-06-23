@@ -118,14 +118,20 @@ exports.findAndCountAll = async ({
     page: +page,
     limit: +limit,
     count: ins.count,
-    rows: ins.rows.map(r => r.toJSON())
+    rows: ins.rows.map(r => {
+      const obj = r.toJSON();
+      delete obj.password;
+      return obj;
+    })
   };
 };
 
 // 查（按id）
 exports.findByPk = async adminId => {
   const ins = await Admin.findByPk(adminId);
-  return ins && ins.toJSON();
+  const newIns = ins ? ins.toJSON() : {};
+  delete newIns.password;
+  return newIns;
 };
 
 // 登录

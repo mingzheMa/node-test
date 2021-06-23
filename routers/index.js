@@ -7,7 +7,7 @@ const session = require("express-session");
 const errorMiddleware = require("./middleware/error");
 const tokenMiddleware = require("./middleware/token");
 
-const loginRouter = require("../api/login");
+const authRouter = require("../api/auth");
 const adminRouter = require("../api/admin");
 const studentRouter = require("../api/student");
 
@@ -78,21 +78,21 @@ app.use(express.raw());
 app.use(cookieParser());
 
 // session处理中间件
-app.use(
-  session({
-    cookie: {
-      path: "/",
-      maxAge: 86400
-    },
-    name: "token",
-    secret: "key"
-  })
-);
+// app.use(
+//   session({
+//     cookie: {
+//       path: "/",
+//       maxAge: 86400
+//     },
+//     name: "token",
+//     secret: "key"
+//   })
+// );
 
 // 验证token
 app.use(tokenMiddleware);
 
-app.use("/api/login", loginRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/student", studentRouter);
 

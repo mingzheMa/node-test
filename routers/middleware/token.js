@@ -1,10 +1,11 @@
 const { pathToRegexp } = require("path-to-regexp");
 
-const error = require("../../utils/error");
+const errorUtil = require("../../utils/error");
 const { decrypt } = require("../../utils/crypto");
+const jwtUtil = require("../../utils/jwt");
 
 // 不需要验证名单
-const notAuthList = [{ method: "POST", path: "/api/login" }];
+const notAuthList = [{ method: "POST", path: "/api/auth/login" }];
 
 module.exports = function (req, res, next) {
   // 判断是否不需要验证
@@ -25,15 +26,33 @@ module.exports = function (req, res, next) {
   //   console.log("userId",userId);
   //   next();
   // } else {
-  //   next(error[0001]);
+  //   next(errorUtil[0001]);
   // }
 
   // session验证方法
-  if (req.session.user) {
-    // 校验token
-    console.log("login user", req.session.user);
-    next();
-  } else {
-    next(error[0001]);
+  // if (req.session.user) {
+  //   // 校验token
+  //   console.log("login user", req.session.user);
+  //   next();
+  // } else {
+  //   next(errorUtil[0001]);
+  // }
+
+  // jwt验证方法
+  const token = req.headers.authorization || req.cookies.token;
+  if (token) {
+    const tokenArr = token.split(" ");
+    const newToken = tokenArr.length === 2 ? tokenArr[1] : tokenArr[0];
+
+    try {
+      const info = jwtUtil.token2Val(newToken);
+      req._jwt = info;
+      next();
+    } catch {
+      next(errorUtil[0001]);
+    }
+    return
   }
+
+  next(errorUtil[0001]);
 };
