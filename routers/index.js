@@ -6,6 +6,7 @@ const session = require("express-session");
 
 const errorMiddleware = require("./middleware/error");
 const tokenMiddleware = require("./middleware/token");
+const requireLogMiddleware = require("./middleware/requireLog");
 
 const authRouter = require("../api/auth");
 const adminRouter = require("../api/admin");
@@ -59,7 +60,7 @@ app.use("/api/cors", cors(), (req, res) => {
 app.use(cors());
 
 // 静态资源中间件
-app.use(express.static(path.resolve(__dirname, "../client")));
+app.use(express.static(path.resolve(__dirname, "../client/dist")));
 
 // 处理请求体的中间件处理后将结果放置res.body中
 // 处理请求体中的application/x-www-form-urlencoded格式参数（该格式为a=1&b=2）
@@ -88,6 +89,9 @@ app.use(cookieParser());
 //     secret: "key"
 //   })
 // );
+
+// 请求日志记录中间件
+app.use(requireLogMiddleware);
 
 // 验证token
 app.use(tokenMiddleware);

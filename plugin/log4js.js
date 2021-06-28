@@ -1,24 +1,30 @@
 const log4js = require("log4js");
 const path = require("path");
 
-const appenders = {
-  default: { type: "stdout", appenders: ["default"] },
-  sql: {
-    appenders: ["sql"],
+function getDateFileConfig(type) {
+  return {
+    appenders: [type],
     type: "dateFile",
-    filename: path.resolve(__dirname, "../logs/sql/sql.log"),
+    filename: path.resolve(__dirname, `../logs/${type}/${type}.log`),
     maxLogSize: 1024 * 1024,
     keepFileExt: true,
     layout: {
       type: "pattern",
       pattern: `[%d{yyyy-MM-dd hh:mm:ss}][%p][%c]: %m`
     }
-  }
+  };
+}
+
+const appenders = {
+  default: { type: "stdout", appenders: ["default"] },
+  sql: getDateFileConfig("sql"),
+  req: getDateFileConfig("req")
 };
 
 const categories = {
   default: { appenders: ["default"], level: "debug" },
-  sql: { appenders: ["sql"], level: "all" }
+  sql: { appenders: ["sql"], level: "all" },
+  req: { appenders: ["req"], level: "all" }
 };
 
 log4js.configure({
