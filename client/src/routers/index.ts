@@ -28,14 +28,10 @@ router.beforeEach((to, from, next) => {
     if (token) {
       next();
     } else {
-      ElMessage({
-        showClose: true,
-        message: "account be overdue",
-        type: "error"
-      });
+      ElMessage.error("account be overdue");
       setTimeout(() => {
         location.href = "/login";
-      },1000);
+      }, 1000);
     }
   } else {
     next();

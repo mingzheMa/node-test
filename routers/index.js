@@ -3,6 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const session = require("express-session");
+const history = require("connect-history-api-fallback");
 
 const errorMiddleware = require("./middleware/error");
 const tokenMiddleware = require("./middleware/token");
@@ -58,6 +59,9 @@ app.use("/api/cors", cors(), (req, res) => {
 
 // 跨域中间件
 app.use(cors());
+
+// 将content-type为text/html的请求视为页面请求
+app.use(history());
 
 // 静态资源中间件
 app.use(express.static(path.resolve(__dirname, "../client/dist")));

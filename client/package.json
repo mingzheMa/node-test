@@ -9,7 +9,8 @@
     "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "element-plus": "^1.0.2-beta.48",
-    "vue": "^3.0.5"
+    "vue": "^3.0.5",
+    "vue-router": "^4.0.10"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.2.3",
