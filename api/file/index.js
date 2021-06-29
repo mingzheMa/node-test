@@ -30,6 +30,19 @@ const uploadImg = multer({
   }
 });
 
+// FormData 会带上一下两个请求头
+// Content-Length: 4764 // 代表FormData大小
+// Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryFqw3BEmtHRJskVJs // FormData格式，以及分隔符
+
+// 请求体会获取请求头中的分隔符来分割请求体，获取formdata内容
+// ------WebKitFormBoundaryFqw3BEmtHRJskVJs
+// Content-Disposition: form-data; name="file"; filename="wuyanzu.jpeg"
+// Content-Type: image/jpeg
+
+
+// ------WebKitFormBoundaryFqw3BEmtHRJskVJs--
+// 2进制编码
+
 router.post("/upload/img", uploadImg.single("file"), (req, res) => {
   res.send({
     url: `/public/img/${req.file.filename}`
