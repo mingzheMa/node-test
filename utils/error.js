@@ -42,5 +42,14 @@ module.exports = {
   4003: {
     code: 400,
     message: "学生不存在"
-  }
+  },
+
+  5001: {
+    code: 400,
+    message: "文件过大"
+  },
+  5002: {
+    code: 400,
+    message: "文件格式错误"
+  },
 };

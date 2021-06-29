@@ -25,7 +25,7 @@ router.post(
     const token = jwtUtil.val2Token({ id: data.id });
     res.cookie("token", token, {
       path: "/",
-      maxAge: 86400
+      maxAge: 1000 * 60 * 60 // 一小时
     });
     res.set("authorization", token);
 
@@ -37,8 +37,8 @@ router.get(
   "/who_am_i",
   nextCatch(async (req, res) => {
     const adminId = req._jwt.id;
-    const data = await adminServices.findByPk(adminId)
-    res.send(data)
+    const data = await adminServices.findByPk(adminId);
+    res.send(data);
   })
 );
 

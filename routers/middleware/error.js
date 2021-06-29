@@ -8,4 +8,6 @@ module.exports = function (err, req, res, next) {
       .status(err.code || 400)
       .send(err.message ? err : { code: 400, message: err });
   }
+
+  next();
 };

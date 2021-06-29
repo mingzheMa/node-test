@@ -12,6 +12,7 @@ const requireLogMiddleware = require("./middleware/requireLog");
 const authRouter = require("../api/auth");
 const adminRouter = require("../api/admin");
 const studentRouter = require("../api/student");
+const fileRouter = require("../api/file");
 
 const app = express();
 
@@ -65,6 +66,7 @@ app.use(history());
 
 // 静态资源中间件
 app.use(express.static(path.resolve(__dirname, "../client/dist")));
+app.use("/public", express.static(path.resolve(__dirname, "../public")));
 
 // 处理请求体的中间件处理后将结果放置res.body中
 // 处理请求体中的application/x-www-form-urlencoded格式参数（该格式为a=1&b=2）
@@ -103,6 +105,7 @@ app.use(tokenMiddleware);
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/student", studentRouter);
+app.use("/api/file", fileRouter);
 
 // 错误处理
 app.use(errorMiddleware);

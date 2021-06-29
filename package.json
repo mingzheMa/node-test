@@ -30,9 +30,11 @@
     "log4js": "^6.3.0",
     "md5": "^2.3.0",
     "mockjs": "^1.1.0",
+    "multer": "^1.4.2",
     "mysql2": "^2.2.5",
     "path-to-regexp": "^6.2.0",
     "sequelize": "^6.6.2",
+    "uuid": "^8.3.2",
     "validate.js": "^0.13.1",
     "vue-router": "^4.0.10"
   }
