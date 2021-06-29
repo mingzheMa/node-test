@@ -3,6 +3,8 @@
   <input type="file" accept="image/*" @change="upload" />
   {{ imgUploadProgressRef }}%
   <img :src="imgUrlRef" alt="" />
+
+  <button @click="download">download</button>
 </template>
 
 <script lang="ts">
@@ -46,11 +48,26 @@
         imgUrlRef.value = res.data.url;
       }
 
+      // 下载文件
+      function download() {
+        // const downloadUrl = "/api/file/download/wuyanzu.zip";
+        // location.href = downloadUrl
+
+        // 迅雷协议下载
+        const downloadUrl =
+          "http://127.0.0.1:9527/api/file/download/wuyanzu.zip";
+        let thunderLink = `AA${downloadUrl}ZZ`;
+        thunderLink = btoa(thunderLink);
+        thunderLink = `thunder://${thunderLink}`;
+        location.href = thunderLink;
+      }
+
       return {
         dataRef,
         upload,
         imgUrlRef,
-        imgUploadProgressRef
+        imgUploadProgressRef,
+        download
       };
     }
   };

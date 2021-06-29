@@ -5,7 +5,10 @@ const { decrypt } = require("../../utils/crypto");
 const jwtUtil = require("../../utils/jwt");
 
 // 不需要验证名单
-const notAuthList = [{ method: "POST", path: "/api/auth/login" }];
+const notAuthList = [
+  { method: "POST", path: "/api/auth/login" },
+  { method: "GET", path: "/api/file/download/:filename" }
+];
 
 module.exports = function (req, res, next) {
   // 判断是否不需要验证
@@ -51,7 +54,7 @@ module.exports = function (req, res, next) {
     } catch {
       next(errorUtil[0001]);
     }
-    return
+    return;
   }
 
   next(errorUtil[0001]);
