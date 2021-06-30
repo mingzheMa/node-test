@@ -2,9 +2,11 @@
   {{ dataRef }}
   <input type="file" accept="image/*" @change="upload" />
   {{ imgUploadProgressRef }}%
-  <img :src="imgUrlRef" alt="" />
+  <img :src="imgInfoRef.url" alt="" />
 
   <button @click="download">download</button>
+
+  {{ imgInfoRef }}
 </template>
 
 <script lang="ts">
@@ -31,7 +33,10 @@
 
       // 上传文件
       const imgUploadProgressRef = ref(0);
-      const imgUrlRef = ref("");
+      const imgInfoRef = ref({
+        url: "",
+        filename: ""
+      });
       async function upload(e) {
         const formData = new FormData();
         formData.append("file", e.target.files[0]);
@@ -45,7 +50,7 @@
         });
         e.target.value = "";
         imgUploadProgressRef.value = 0;
-        imgUrlRef.value = res.data.url;
+        imgInfoRef.value = res.data;
       }
 
       // 下载文件
@@ -53,19 +58,25 @@
         // const downloadUrl = "/api/file/download/wuyanzu.zip";
         // location.href = downloadUrl
 
-        // 迅雷协议下载
-        const downloadUrl =
-          "http://127.0.0.1:9527/api/file/download/wuyanzu.zip";
-        let thunderLink = `AA${downloadUrl}ZZ`;
-        thunderLink = btoa(thunderLink);
-        thunderLink = `thunder://${thunderLink}`;
-        location.href = thunderLink;
+        // 迅雷协议下载,如果使用迅雷下载，不要再服务端做权限校验
+        // const downloadUrl =
+        //   "http://127.0.0.1:9527/api/file/download/wuyanzu.zip";
+        // let thunderLink = `AA${downloadUrl}ZZ`;
+        // thunderLink = btoa(thunderLink);
+        // thunderLink = `thunder://${thunderLink}`;
+        // location.href = thunderLink;
+
+        // 下载上传的图片
+        if (imgInfoRef.value.filename) {
+          const downloadUrl = `/api/file/download/img/${imgInfoRef.value.filename}`;
+          location.href = downloadUrl;
+        }
       }
 
       return {
         dataRef,
         upload,
-        imgUrlRef,
+        imgInfoRef,
         imgUploadProgressRef,
         download
       };

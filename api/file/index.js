@@ -4,6 +4,8 @@ const path = require("path");
 const { v4 } = require("uuid");
 
 const error = require("../../utils/error");
+const watermark = require("../../utils/watermark");
+const nextCatch = require("../../utils/nextCatch");
 
 const router = express.Router();
 const uploadImg = multer({
@@ -42,11 +44,31 @@ const uploadImg = multer({
 
 // ------WebKitFormBoundaryFqw3BEmtHRJskVJs--
 // 2进制编码
-router.post("/upload/img", uploadImg.single("file"), (req, res) => {
-  res.send({
-    url: `/public/img/${req.file.filename}`
-  });
-});
+router.post(
+  "/upload/img",
+  uploadImg.single("file"),
+  nextCatch(async (req, res) => {
+    const orginPath = path.resolve(
+      __dirname,
+      `../../public/img/${req.file.filename}`
+    );
+    const targetPath = path.resolve(
+      __dirname,
+      `../../public/watermark-img/${req.file.filename}`
+    );
+    const watermarkPath = path.resolve(
+      __dirname,
+      "../../public/watermark/watermark.png"
+    );
+
+    await watermark(orginPath, watermarkPath, targetPath);
+
+    res.send({
+      url: `/public/watermark-img/${req.file.filename}`,
+      filename: req.file.filename
+    });
+  })
+);
 
 // 下载文件
 // 请求头
@@ -57,8 +79,15 @@ router.post("/upload/img", uploadImg.single("file"), (req, res) => {
 // Accept-Ranges: bytes // 单位
 // Content-Length: 5270 // 文件大小
 
+// 下载图片
+router.get("/download/img/:filename", (req, res) => {
+  res.download(
+    path.resolve(__dirname, "../../public/img", req.params.filename),
+    req.params.filename
+  );
+});
 
-
+// 下载文件
 router.get("/download/:filename", (req, res) => {
   res.download(
     path.resolve(__dirname, "../../resources", req.params.filename),
