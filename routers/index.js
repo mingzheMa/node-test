@@ -15,6 +15,7 @@ const authRouter = require("../api/auth");
 const adminRouter = require("../api/admin");
 const studentRouter = require("../api/student");
 const fileRouter = require("../api/file");
+const ejsRouter = require("../api/ejs");
 
 const app = express();
 
@@ -63,10 +64,15 @@ app.use("/api/cors", cors(), (req, res) => {
 // 跨域中间件
 app.use(cors());
 
+// ejs
+app.use("/ejs", ejsRouter);
+
 // 将content-type为text/html的请求视为页面请求
-app.use(history({
-  htmlAcceptHeaders: ['text/html', 'application/xhtml+xml']
-}));
+app.use(
+  history({
+    htmlAcceptHeaders: ["text/html", "application/xhtml+xml"]
+  })
+);
 
 // 静态资源中间件
 app.use(express.static(path.resolve(__dirname, "../client/dist")));

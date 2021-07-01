@@ -21,3 +21,12 @@ require("./_init");
 // }
 
 // test();
+
+// const ejs = require("ejs");
+
+// const temp = "hhh: <%= name %>";
+
+// const a = ejs.render(temp, {
+//   name: "123"
+// });
+// console.log(a)
