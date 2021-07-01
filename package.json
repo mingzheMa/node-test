@@ -38,5 +38,8 @@
     "uuid": "^8.3.2",
     "validate.js": "^0.13.1",
     "vue-router": "^4.0.10"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^2.0.0"
   }
 }

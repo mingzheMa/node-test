@@ -9,6 +9,7 @@ const errorMiddleware = require("./middleware/error");
 const tokenMiddleware = require("./middleware/token");
 const requireLogMiddleware = require("./middleware/requireLog");
 const antiTheftLinkMiddleware = require("./middleware/antiTheftLink");
+const proxyMiddleware = require("./middleware/proxy.js");
 
 const authRouter = require("../api/auth");
 const adminRouter = require("../api/admin");
@@ -63,7 +64,9 @@ app.use("/api/cors", cors(), (req, res) => {
 app.use(cors());
 
 // 将content-type为text/html的请求视为页面请求
-app.use(history());
+app.use(history({
+  htmlAcceptHeaders: ['text/html', 'application/xhtml+xml']
+}));
 
 // 静态资源中间件
 app.use(express.static(path.resolve(__dirname, "../client/dist")));
@@ -100,6 +103,9 @@ app.use(requireLogMiddleware);
 
 // 验证token
 app.use(tokenMiddleware);
+
+// 代理
+app.use("/data/api", proxyMiddleware);
 
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
