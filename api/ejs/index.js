@@ -7,6 +7,13 @@ const adminServices = require("../../services/admin");
 
 const router = express.Router();
 
+// 传统的MVC模式，module、view、controller
+// module 数据模型
+// view 视图
+// controller 控制器
+
+// 请求 -> 控制器获取数据模型 -> 控制器拼接视图 -> 返回响应
+
 router.get(
   "/admin",
   nextCatch(async (req, res) => {
