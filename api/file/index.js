@@ -4,8 +4,9 @@ const path = require("path");
 const { v4 } = require("uuid");
 
 const error = require("../../utils/error");
-const watermark = require("../../utils/watermark");
+const mixinPicture = require("../../utils/mixinPicture");
 const nextCatch = require("../../utils/nextCatch");
+const qrcode = require("../../utils/qrcode");
 
 const router = express.Router();
 const uploadImg = multer({
@@ -61,7 +62,7 @@ router.post(
       "../../public/watermark/watermark.png"
     );
 
-    await watermark(orginPath, watermarkPath, targetPath);
+    await mixinPicture(orginPath, watermarkPath, targetPath);
 
     res.send({
       url: `/public/watermark-img/${req.file.filename}`,
@@ -94,5 +95,42 @@ router.get("/download/:filename", (req, res) => {
     req.params.filename
   );
 });
+
+// 生成二维码
+router.post(
+  "/create-qrcode",
+  nextCatch(async (req, res) => {
+    const { payload, logo } = req.body;
+
+    if (logo) {
+      const filename = await qrcode.toFile(payload);
+      const targetPath = path.resolve(
+        __dirname,
+        "../../public/qrcode",
+        filename
+      );
+      await mixinPicture(
+        targetPath,
+        logo,
+        targetPath,
+        undefined,
+        undefined,
+        0.2,
+        1
+      );
+
+      res.send({
+        url: `/public/qrcode/${filename}`,
+        filename
+      });
+    } else {
+      const filename = await qrcode.toFile(payload);
+      res.send({
+        url: `/public/qrcode/${filename}`,
+        filename
+      });
+    }
+  })
+);
 
 module.exports = router;
