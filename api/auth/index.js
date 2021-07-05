@@ -49,7 +49,6 @@ async function within(req) {
 router.post(
   "/login",
   nextCatch(async (req, res) => {
-    console.log(req.session.captcha);
     // 一开始并不会请求验证码图片，所以captcha为空
     if (!req.session.captcha) {
       req.session.captcha = {};

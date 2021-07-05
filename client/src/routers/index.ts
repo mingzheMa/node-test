@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import cookie from "cookie";
 import { ElMessage } from "element-plus";
 
+import layout from "@/layout/index.vue";
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -16,7 +18,17 @@ const router = createRouter({
       meta: {
         auth: true
       },
-      component: () => import("@/pages/index/index.vue")
+      component: layout,
+      children: [
+        {
+          path: "/",
+          component: () => import("@/pages/index/index.vue")
+        },
+        {
+          path: "websocket",
+          component: () => import("@/pages/websocket/index.vue")
+        }
+      ]
     }
   ]
 });
