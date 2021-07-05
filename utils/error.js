@@ -16,6 +16,14 @@ module.exports = {
     code: 400,
     message: "用户不存在"
   },
+  1004: {
+    code: 400,
+    message: "验证码错误"
+  },
+  1005: {
+    code: 400,
+    message: "请输入验证码"
+  },
 
   2001: {
     code: 400,

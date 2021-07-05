@@ -16,6 +16,7 @@ const adminRouter = require("../api/admin");
 const studentRouter = require("../api/student");
 const fileRouter = require("../api/file");
 const ejsRouter = require("../api/ejs");
+const captchaRouter = require("../api/captcha");
 
 const app = express();
 
@@ -74,6 +75,7 @@ app.use(
   })
 );
 
+
 // 静态资源中间件
 app.use(express.static(path.resolve(__dirname, "../client/dist")));
 // 图片防盗链
@@ -103,6 +105,21 @@ app.use(cookieParser());
 //     secret: "key"
 //   })
 // );
+
+// session处理验证码
+app.use(
+  session({
+    cookie: {
+      path: "/",
+      maxAge: 1000 * 60 * 60 // 五分钟
+    },
+    name: "captcha",
+    secret: "siyao"
+  })
+);
+
+// 验证码
+app.use("/captcha", captchaRouter);
 
 // 请求日志记录中间件
 app.use(requireLogMiddleware);

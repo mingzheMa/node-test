@@ -7,7 +7,7 @@ const jwtUtil = require("../../utils/jwt");
 // 不需要验证名单
 const notAuthList = [
   { method: "POST", path: "/api/auth/login" },
-  { method: "GET", path: "/api/file/download/:filename" }
+  { method: "GET", path: "/api/file/download/:filename" },
 ];
 
 module.exports = function (req, res, next) {

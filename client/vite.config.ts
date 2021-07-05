@@ -16,6 +16,9 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "http://localhost:9527/"
+      },
+      "/captcha": {
+        target: "http://localhost:9527/"
       }
     }
   }
