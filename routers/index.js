@@ -18,7 +18,13 @@ const fileRouter = require("../api/file");
 const ejsRouter = require("../api/ejs");
 const captchaRouter = require("../api/captcha");
 
+const chatSocketRouter = require("../api/socket/chart");
+
 const app = express();
+const http = require("http").createServer(app);
+
+// 挂载websocket
+chatSocketRouter(http);
 
 // jsonp跨域处理
 // 局限性：由于script只能发送get请求所以，其他请求方式不适用
@@ -96,10 +102,9 @@ app.use(
 //       如果资源未改变，则返回304并附加响应头(和首次请求的响应头一致)表示资源可以继续使用缓存
 //     如果没有过期，则继续使用缓存中的资源
 
-
 app.use(
   express.static(path.resolve(__dirname, "../client/dist"), {
-    maxAge: 1000 * 3600 * 24 * 365, // 静态资源缓存一年，因为每次变动jscss资源的hash值都会变化，所以不用担心代码变动浏览器读取缓存
+    maxAge: 1000 * 3600 * 24 * 365 // 静态资源缓存一年，因为每次变动jscss资源的hash值都会变化，所以不用担心代码变动浏览器读取缓存
   })
 );
 // 图片防盗链
@@ -163,6 +168,6 @@ app.use("/api/file", fileRouter);
 app.use(errorMiddleware);
 
 const port = 9527;
-app.listen(port, () => {
+http.listen(port, () => {
   console.log("serve listen 9527");
 });

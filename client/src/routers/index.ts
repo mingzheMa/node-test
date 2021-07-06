@@ -3,6 +3,7 @@ import cookie from "cookie";
 import { ElMessage } from "element-plus";
 
 import layout from "@/layout/index.vue";
+import userComp from "../composition/user"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,13 +28,22 @@ const router = createRouter({
         {
           path: "websocket",
           component: () => import("@/pages/websocket/index.vue")
+        },
+        {
+          path: "chat-room",
+          component: () => import("@/pages/chat-room/index.vue")
         }
       ]
     }
   ]
 });
 
-router.beforeEach((to, from, next) => {
+const notAuthPath = ["/login"]
+router.beforeEach(async (to, from, next) => {
+  if(!notAuthPath.includes(to.path) && !Object.keys(userComp.userInfoRef.value).length){
+    await userComp.getUserInfo()
+  }
+
   if (to.meta.auth) {
     const { token } = cookie.parse(document.cookie);
 

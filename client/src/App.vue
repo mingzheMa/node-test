@@ -2,8 +2,10 @@
   <router-view />
 </template>
 
-<script lang="ts">
-  export default {};
-</script>
+<script lang="ts"></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+  html body {
+    margin: 0;
+  }
+</style>

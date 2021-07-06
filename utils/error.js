@@ -3,7 +3,7 @@ module.exports = {
     code: 401,
     message: "请重新登录"
   },
-
+ 
   1001: {
     code: 400,
     message: "用户已存在"
@@ -60,4 +60,10 @@ module.exports = {
     code: 400,
     message: "文件格式错误"
   },
+
+  6001: {
+    code: 401,
+    message: "异地登录"
+  },
+
 };

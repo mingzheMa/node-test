@@ -9,8 +9,13 @@
     </el-form-item>
 
     <el-form-item label="captcha" v-if="isCaptchaRef">
-      <el-input v-model="formRef.captcha" ></el-input>
-      <img :src="captchaSrcRef" alt="" :style="{width:'160px',height:'100px'}" @click="resetCaptchaSrc">
+      <el-input v-model="formRef.captcha"></el-input>
+      <img
+        :src="captchaSrcRef"
+        alt=""
+        :style="{ width: '160px', height: '100px' }"
+        @click="resetCaptchaSrc"
+      />
     </el-form-item>
 
     <el-button type="primary" @click="login">login</el-button>
@@ -34,33 +39,33 @@
       const formRef = ref({
         username: "",
         password: "",
-        captcha:""
+        captcha: ""
       });
 
-      const isCaptchaRef = ref(false)
+      const isCaptchaRef = ref(false);
 
       async function login() {
         try {
           await axios.post("/api/auth/login", {
             user_name: formRef.value.username,
             password: formRef.value.password,
-            captcha: formRef.value.captcha,
+            captcha: formRef.value.captcha
           });
           ElMessage.success("success");
           router.push("/");
-          isCaptchaRef.value = false
+          isCaptchaRef.value = false;
         } catch (error) {
           ElMessage.error(JSON.stringify(error.response.data.message));
-          isCaptchaRef.value = true
+          isCaptchaRef.value = true;
         }
 
-        resetCaptchaSrc()
+        resetCaptchaSrc();
       }
 
-      const captchaSrcRef = ref("/captcha")
+      const captchaSrcRef = ref("/captcha");
 
-      function resetCaptchaSrc(){
-        captchaSrcRef.value = `/captcha?reset=${Math.random()}`
+      function resetCaptchaSrc() {
+        captchaSrcRef.value = `/captcha?reset=${Math.random()}`;
       }
 
       return {

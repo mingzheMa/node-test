@@ -37,6 +37,7 @@
     "path-to-regexp": "^6.2.0",
     "qrcode": "^1.4.4",
     "sequelize": "^6.6.2",
+    "socket.io": "^4.1.2",
     "svg-captcha": "^1.4.0",
     "uuid": "^8.3.2",
     "validate.js": "^0.13.1",
