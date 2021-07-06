@@ -2,9 +2,10 @@ const express = require("express");
 
 const nextCatch = require("../../utils/nextCatch");
 const { encrypt } = require("../../utils/crypto");
-const adminServices = require("../../services/admin");
 const jwtUtil = require("../../utils/jwt");
 const error = require("../../utils/error");
+
+const adminServices = require("../../services/admin");
 
 const router = express.Router();
 
@@ -94,6 +95,19 @@ router.get(
   nextCatch(async (req, res) => {
     const adminId = req._jwt.id;
     const data = await adminServices.findByPk(adminId);
+    res.send(data);
+  })
+);
+
+router.post(
+  "/register",
+  nextCatch(async (req, res) => {
+    // 验证验证码
+    req.session.captcha.isCaptcha = true
+    await verificationCaptcha(req);
+
+    // 注册操作
+    const data = await adminServices.create(req.body);
     res.send(data);
   })
 );

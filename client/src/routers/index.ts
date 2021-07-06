@@ -3,7 +3,7 @@ import cookie from "cookie";
 import { ElMessage } from "element-plus";
 
 import layout from "@/layout/index.vue";
-import userComp from "../composition/user"
+import userComp from "../composition/user";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -12,6 +12,11 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: () => import("@/pages/login/index.vue")
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: () => import("@/pages/register/index.vue")
     },
     {
       path: "/",
@@ -38,10 +43,13 @@ const router = createRouter({
   ]
 });
 
-const notAuthPath = ["/login"]
+const notAuthPath = ["/login", "/register"];
 router.beforeEach(async (to, from, next) => {
-  if(!notAuthPath.includes(to.path) && !Object.keys(userComp.userInfoRef.value).length){
-    await userComp.getUserInfo()
+  if (
+    !notAuthPath.includes(to.path) &&
+    !Object.keys(userComp.userInfoRef.value).length
+  ) {
+    await userComp.getUserInfo();
   }
 
   if (to.meta.auth) {

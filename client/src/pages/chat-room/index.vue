@@ -7,7 +7,7 @@
     </el-col>
 
     <el-col :span="18" class="msg-box">
-      <div class="msg-list">
+      <div class="msg-list" ref="msgListDomRef">
         <template v-for="msg in msgListRef" :key="msg.msg_id">
           <div v-if="msg.msg_type === 'USER'" class="msg-li">
             <div class="msg-info">{{ msg.user }}:</div>

@@ -1,5 +1,4 @@
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref, nextTick } from "vue";
 
 import userCom from "../../../composition/user";
 
@@ -15,14 +14,17 @@ export default function (socket) {
     // },
   ]);
 
+  // 消息列表元素
+  const msgListDomRef = ref(null);
+
   // 监听消息事件，添加消息
   socket.on("msg", data => {
     // 判断消息类型
-    let msgType = "USER"
-    if(data.isNotice){
-      msgType = "NOTICE"
-    }else if(data.from.id === (userCom.userInfoRef.value as any).id){
-      msgType = "SELF"
+    let msgType = "USER";
+    if (data.isNotice) {
+      msgType = "NOTICE";
+    } else if (data.from.id === (userCom.userInfoRef.value as any).id) {
+      msgType = "SELF";
     }
 
     msgListRef.value.push({
@@ -32,6 +34,8 @@ export default function (socket) {
       msg: data.content,
       msg_type: msgType
     });
+
+    backBottom();
   });
 
   // 输入消息
@@ -46,13 +50,23 @@ export default function (socket) {
         content: msgRef.value
       });
 
-      msgRef.value = ""
+      msgRef.value = "";
+      backBottom();
     }
   }
 
+  // 回到底部
+  function backBottom() {
+    nextTick(() => {
+      msgListDomRef.value.scrollTop = msgListDomRef.value.scrollHeight;
+    });
+  }
+
   return {
+    msgListDomRef,
     msgListRef,
     msgRef,
-    sendMsg
+    sendMsg,
+    backBottom
   };
 }
