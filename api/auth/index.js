@@ -82,7 +82,9 @@ router.post(
     const token = jwtUtil.val2Token({ id: data.id });
     res.cookie("token", token, {
       path: "/",
-      maxAge: 1000 * 60 * 60 // 一小时
+      maxAge: 1000 * 60 * 60, // 一小时
+      // 防止CSRF攻击，比如用户在访问过本站后打开了一个新页面，该页面请求本站做一些入库操作（当然在用户不知情的情况下），因为用户之前登录过本站，所以请求自动带cookie，本站无法分辨是否收到了CSRF攻击
+      sameSite: "Lax"
     });
     res.set("authorization", token);
 
@@ -103,7 +105,7 @@ router.post(
   "/register",
   nextCatch(async (req, res) => {
     // 验证验证码
-    req.session.captcha.isCaptcha = true
+    req.session.captcha.isCaptcha = true;
     await verificationCaptcha(req);
 
     // 注册操作
